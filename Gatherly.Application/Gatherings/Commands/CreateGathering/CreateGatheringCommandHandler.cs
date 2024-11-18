@@ -1,7 +1,7 @@
 ﻿using Gatherly.Domain.Repositories;
 using MediatR;
 
-namespace Gatherly.Application.Gathering.Commands.CreateGathering;
+namespace Gatherly.Application.Gatherings.Commands.CreateGathering;
 
 internal class CreateGatheringCommandHandler
 {
@@ -21,7 +21,7 @@ internal class CreateGatheringCommandHandler
     public async Task<Unit> HandleAsync(CreateGatheringCommand request, 
         CancellationToken cancellationToken)
     {
-        var member = await _memberRepository.GetMemberByIdAsync(request.MemberId, cancellationToken);
+        var member = await _memberRepository.GetByIdAsync(request.MemberId, cancellationToken);
 
         if (member == null)
         {

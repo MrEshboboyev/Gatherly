@@ -1,7 +1,7 @@
 ﻿using Gatherly.Domain.Enums;
 using MediatR;
 
-namespace Gatherly.Application.Gathering.Commands.CreateGathering;
+namespace Gatherly.Application.Gatherings.Commands.CreateGathering;
 
 public sealed record CreateGatheringCommand(
     Guid MemberId, 
