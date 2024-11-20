@@ -30,13 +30,20 @@ builder.Services.AddValidatorsFromAssembly(Gatherly.Application.AssemblyReferenc
 builder.Services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandler<>));
 
 string connectionString = builder.Configuration.GetConnectionString("Database");
+
 builder.Services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+builder.Services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
+
 builder.Services.AddDbContext<ApplicationDbContext>(
     (sp, optionsBuilder) =>
     {
-        var inteceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
+        var outboxInterceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>()!;
+        var auditableInterceptor = sp.GetService<UpdateAuditableEntitiesInterceptor>()!;
+
         optionsBuilder.UseNpgsql(connectionString)
-            .AddInterceptors(inteceptor);
+            .AddInterceptors(
+                outboxInterceptor,
+                auditableInterceptor);
     });
 
 builder.Services.AddQuartz(configure =>
