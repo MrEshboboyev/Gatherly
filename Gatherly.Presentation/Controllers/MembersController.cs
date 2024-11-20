@@ -34,7 +34,7 @@ public sealed class MembersController : ApiController
         Result<Guid> result = await Sender.Send(command, cancellationToken);
         if (result.IsFailure)
         {
-            return BadRequest(result.Error);
+            return HandleFailure(result);
         }
         return CreatedAtAction(
            nameof(GetMemberById),
