@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gatherly.Infrastructure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gatherly.Presentation", "Gatherly.Presentation\Gatherly.Presentation.csproj", "{0844F778-0B93-455B-9B5C-BD940C4CABCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gatherly.App", "Gatherly.App\Gatherly.App.csproj", "{39752B9D-C248-43D7-9607-4428734E7079}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0844F778-0B93-455B-9B5C-BD940C4CABCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0844F778-0B93-455B-9B5C-BD940C4CABCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0844F778-0B93-455B-9B5C-BD940C4CABCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39752B9D-C248-43D7-9607-4428734E7079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39752B9D-C248-43D7-9607-4428734E7079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39752B9D-C248-43D7-9607-4428734E7079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39752B9D-C248-43D7-9607-4428734E7079}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
