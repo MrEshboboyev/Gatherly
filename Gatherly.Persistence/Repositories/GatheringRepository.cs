@@ -11,6 +11,23 @@ internal sealed class GatheringRepository : IGatheringRepository
     {
         _dbContext = dbContext;
     }
+
+    public async Task<Gathering> GetByIdAsync(
+            Guid id,
+            CancellationToken cancellationToken = default)
+    {
+        Gathering gathering = await _dbContext
+            .Set<Gathering>()
+            .AsSingleQuery()
+            .Include(gathering => gathering.Creator)
+            .Include(gathering => gathering.Attendees)
+            .Include(gathering => gathering.Invitations)
+            .FirstOrDefaultAsync(
+                gathering => gathering.Id == id,
+                cancellationToken);
+        return gathering;
+    }
+
     public async Task<Gathering> GetByIdWithCreatorAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Set<Gathering>()

@@ -7,12 +7,12 @@ public class Attendee
     {
         GatheringId = invitation.GatheringId;
         MemberId = invitation.MemberId;
-        CreateOnUtc = invitation.CreateOnUtc;
+        CreatedOnUtc = invitation.CreateOnUtc;
     }
     private Attendee()
     {
     }
     public Guid GatheringId { get; private set; }
     public Guid MemberId { get; private set; }
-    public DateTime CreateOnUtc { get; private set; }
+    public DateTime CreatedOnUtc { get; private set; }
 }

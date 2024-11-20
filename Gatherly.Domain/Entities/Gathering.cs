@@ -122,7 +122,7 @@ public sealed class Gathering : AggregateRoot
             return Result.Failure<Attendee>(DomainErrors.Gathering.Expired);
         }
         var attendee = invitation.Accept();
-        RaiseDomainEvent(new InvitationAcceptedDomainEvent(invitation.Id, Id));
+        RaiseDomainEvent(new InvitationAcceptedDomainEvent(Guid.NewGuid(), invitation.Id, Id));
         _attendees.Add(attendee);
         NumberOfAttendees++;
         return attendee;
