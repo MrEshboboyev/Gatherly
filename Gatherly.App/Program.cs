@@ -4,6 +4,8 @@ using Gatherly.Persistence.Interceptors;
 using MediatR;
 using Quartz;
 using Gatherly.Infrastructure.BackgroundJobs;
+using FluentValidation;
+using Gatherly.Application.Behaviors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,10 @@ builder.Services
            .WithScopedLifetime());
 
 builder.Services.AddMediatR(Gatherly.Application.AssemblyReference.Assembly);
+
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+builder.Services.AddValidatorsFromAssembly(Gatherly.Application.AssemblyReference.Assembly,
+    includeInternalTypes: true);
 
 string connectionString = builder.Configuration.GetConnectionString("Database");
 builder.Services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
