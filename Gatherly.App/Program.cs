@@ -61,13 +61,13 @@ builder.Services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
 builder.Services.AddDbContext<ApplicationDbContext>(
     (sp, optionsBuilder) =>
     {
-        var outboxInterceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>()!;
-        var auditableInterceptor = sp.GetService<UpdateAuditableEntitiesInterceptor>()!;
+        //var outboxInterceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>()!;
+        //var auditableInterceptor = sp.GetService<UpdateAuditableEntitiesInterceptor>()!;
 
-        optionsBuilder.UseNpgsql(connectionString)
-            .AddInterceptors(
-                outboxInterceptor,
-                auditableInterceptor);
+        optionsBuilder.UseNpgsql(connectionString);
+            //.AddInterceptors(
+    //            outboxInterceptor,
+    //            auditableInterceptor);
     });
 
 builder.Services.AddQuartz(configure =>
