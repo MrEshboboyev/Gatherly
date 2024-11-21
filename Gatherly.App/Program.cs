@@ -47,6 +47,8 @@ builder.Services
            .AsImplementedInterfaces()
            .WithScopedLifetime());
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddMediatR(Gatherly.Application.AssemblyReference.Assembly);
 
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
@@ -66,7 +68,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
         //var outboxInterceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>()!;
         //var auditableInterceptor = sp.GetService<UpdateAuditableEntitiesInterceptor>()!;
 
-        optionsBuilder.UseNpgsql(connectionString);
+        optionsBuilder.UseSqlServer(connectionString);
             //.AddInterceptors(
     //            outboxInterceptor,
     //            auditableInterceptor);
