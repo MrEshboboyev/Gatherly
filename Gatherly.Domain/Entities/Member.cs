@@ -21,6 +21,8 @@ public sealed class Member : AggregateRoot, IAuditableEntity
     public Email Email { get; set; }
     public DateTime CreatedOnUtc { get; set; }
     public DateTime? ModifiedOnUtc { get; set; }
+    public ICollection<Role> Roles { get; set; }
+
     public static Member Create(
         Guid id,
         Email email,
