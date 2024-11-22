@@ -37,25 +37,28 @@ builder.Services.AddScoped<IMemberRepository, CachedMemberRepository>();
 //builder.Services.Decorate<IMemberRepository, CachedMemberRepository>();
 
 
-builder.Services
-       .Scan(selector => selector
-       .FromAssemblies(
-           Gatherly.Infrastructure.AssemblyReference.Assembly,
-           Gatherly.Persistence.AssemblyReference.Assembly)
-           .AddClasses(false)
-           .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-           .AsImplementedInterfaces()
-           .WithScopedLifetime());
+builder
+    .Services
+    .Scan(
+        selector => selector
+            .FromAssemblies(
+                Gatherly.Infrastructure.AssemblyReference.Assembly,
+                Gatherly.Persistence.AssemblyReference.Assembly)
+            .AddClasses(false)
+            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+            .AsMatchingInterface()
+            .WithScopedLifetime());
 
 builder.Services.AddMemoryCache();
 
 builder.Services.AddMediatR(Gatherly.Application.AssemblyReference.Assembly);
 
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
-builder.Services.AddValidatorsFromAssembly(Gatherly.Application.AssemblyReference.Assembly,
-    includeInternalTypes: true);
 
 builder.Services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandler<>));
+
+builder.Services.AddValidatorsFromAssembly(Gatherly.Application.AssemblyReference.Assembly,
+    includeInternalTypes: true);
 
 string connectionString = builder.Configuration.GetConnectionString("Database");
 
@@ -73,6 +76,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     //            outboxInterceptor,
     //            auditableInterceptor);
     });
+
+builder.Services.AddScoped<IJob, ProcessOutboxMessagesJob>();
 
 builder.Services.AddQuartz(configure =>
 {

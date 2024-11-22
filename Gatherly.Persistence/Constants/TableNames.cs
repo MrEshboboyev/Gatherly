@@ -7,5 +7,7 @@ internal static class TableNames
     internal const string Invitations = nameof(Invitations);
     internal const string Attendees = nameof(Attendees);
     internal const string OutboxMessages = nameof(OutboxMessages);
-    internal const string OutboxMessageConsumers = nameof(OutboxMessageConsumers);
+    internal const string OutboxMessageConsumers = nameof(OutboxMessageConsumers); 
+    internal const string Roles = nameof(Roles);
+    internal const string Permissions = nameof(Permissions);
 }
