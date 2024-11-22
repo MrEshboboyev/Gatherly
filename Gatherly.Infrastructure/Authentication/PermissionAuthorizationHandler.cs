@@ -11,24 +11,23 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
     {
         _serviceScopeFactory = serviceScopeFactory;
     }
-    protected override async Task HandleRequirementAsync(
+
+    protected override Task HandleRequirementAsync(
         AuthorizationHandlerContext context,
         PermissionRequirement requirement)
     {
-        string memberId = context.User.Claims.FirstOrDefault(
-            x => x.Type == JwtRegisteredClaimNames.Sub)?.Value;
-        if (!Guid.TryParse(memberId, out Guid parsedMemberId))
-        {
-            return;
-        }
-        using IServiceScope scope = _serviceScopeFactory.CreateScope();
-        IPermissionService permissionService = scope.ServiceProvider
-            .GetService<IPermissionService>();
-        HashSet<string> permissions = await permissionService
-            .GetPermissionsAsync(parsedMemberId);
+        HashSet<string> permissions = context
+                .User
+                .Claims
+                .Where(x => x.Type == CustomClaims.Permissions)
+                .Select(x => x.Value)
+                .ToHashSet();
+
         if (permissions.Contains(requirement.Permission))
         {
             context.Succeed(requirement);
         }
+
+        return Task.CompletedTask;
     }
 }

@@ -33,7 +33,7 @@ internal sealed class LoginCommandHandler : ICommandHandler<LoginCommand, string
                 DomainErrors.Member.InvalidCredentials);
         }
 
-        string token = _jwtProvider.Generate(member);
+        string token = await _jwtProvider.GenerateAsync(member);
         return token;
     }
 }
