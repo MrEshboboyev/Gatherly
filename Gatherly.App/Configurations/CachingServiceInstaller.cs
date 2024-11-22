@@ -1,4 +1,6 @@
-﻿using Gatherly.Domain.Repositories;
+﻿using Gatherly.Application.Caching;
+using Gatherly.Domain.Repositories;
+using Gatherly.Infrastructure.Services;
 using Gatherly.Persistence.Repositories;
 
 namespace Gatherly.App.Configurations;
@@ -13,7 +15,7 @@ public class CachingServiceInstaller : IServiceInstaller
         services.AddScoped<IMemberRepository, CachedMemberRepository>();
         // services.AddScoped<MemberSqlRepository>();
         services.AddMemoryCache();
-        
+
         // second aproach
         //builder.Services.AddScoped<IMemberRepository>(provider =>
         //{
@@ -26,5 +28,8 @@ public class CachingServiceInstaller : IServiceInstaller
         //third aproach with Scrutor
         //builder.Services.AddScoped<IMemberRepository, MemberRepository>();
         //builder.Services.Decorate<IMemberRepository, CachedMemberRepository>();
+
+        services.AddDistributedMemoryCache();
+        services.AddSingleton<ICacheService, CacheService>();
     }
 }
