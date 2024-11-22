@@ -53,4 +53,9 @@ public class CachedMemberRepository : IMemberRepository
     }
 
     public void Update(Member member) => _decorated.Update(member);
+
+    public async Task<List<Member>> GetMembersAsync(CancellationToken cancellationToken = default)
+    {
+        return await _decorated.GetMembersAsync(cancellationToken);
+    }
 }

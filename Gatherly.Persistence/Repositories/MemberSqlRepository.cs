@@ -22,9 +22,9 @@ public sealed class MemberSqlRepository : IMemberRepository
             snapshot);
     }
     
-    public async Task<Member?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default)
+    public async Task<Member> GetByEmailAsync(Email email, CancellationToken cancellationToken = default)
     {
-        MemberSnapshot? memberSnapshot = await _dbConnection
+        MemberSnapshot memberSnapshot = await _dbConnection
             .QueryFirstOrDefaultAsync<MemberSnapshot>(
                 @"SELECT Id, Email, FirstName, LastName, CreatedOnUtc, ModifiedOnUtc
                   FROM Members
@@ -37,9 +37,9 @@ public sealed class MemberSqlRepository : IMemberRepository
         return Member.FromSnapshot(memberSnapshot);
     }
     
-    public async Task<Member?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Member> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        MemberSnapshot? memberSnapshot = await _dbConnection
+        MemberSnapshot memberSnapshot = await _dbConnection
             .QueryFirstOrDefaultAsync<MemberSnapshot>(
                 @"SELECT Id, Email, FirstName, LastName, CreatedOnUtc, ModifiedOnUtc
                   FROM Members
@@ -57,7 +57,12 @@ public sealed class MemberSqlRepository : IMemberRepository
     {
         throw new NotImplementedException();
     }
-    
+
+    public Task<List<Member>> GetMembersAsync(CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
