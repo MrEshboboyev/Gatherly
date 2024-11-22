@@ -12,7 +12,9 @@ public class ApplicationServiceInstaller : IServiceInstaller
         services.AddMediatR(Application.AssemblyReference.Assembly);
         
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
-        
+
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
+
         services.Decorate(typeof(INotificationHandler<>), typeof(IdempotentDomainEventHandler<>));
         
         services.AddValidatorsFromAssembly(
