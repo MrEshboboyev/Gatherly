@@ -8,13 +8,13 @@ using Gatherly.Infrastructure.Authentication;
 using Gatherly.Presentation.Abstractions;
 using Gatherly.Presentation.Contracts.Members;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using Gatherly.Application.Members.Queries.GetMembers;
+using Gatherly.Presentation.Authentication;
 
 namespace Gatherly.Presentation.Controllers;
 
+[ApiKey]
 [Route("api/members")]
 public sealed class MembersController : ApiController
 {
