@@ -3,6 +3,7 @@ using Gatherly.Application.Members.Commands.Login;
 using Gatherly.Application.Members.Commands.UpdateMember;
 using Gatherly.Application.Members.Queries.GetMemberById;
 using Gatherly.Domain.Shared;
+using Gatherly.Domain.Enums;
 using Gatherly.Infrastructure.Authentication;
 using Gatherly.Presentation.Abstractions;
 using Gatherly.Presentation.Contracts.Members;
@@ -14,7 +15,6 @@ using System.Net;
 namespace Gatherly.Presentation.Controllers;
 
 [Route("api/members")]
-[HasPermission(Permission.AccessMembers)]
 public sealed class MembersController : ApiController
 {
     public MembersController(ISender sender)
@@ -71,6 +71,7 @@ public sealed class MembersController : ApiController
     }
 
     [HttpPut("{id:guid}")]
+    [HasPermission(Permission.UpdateMember)]
     public async Task<IActionResult> UpdateMember(
             Guid id,
             [FromBody] UpdateMemberRequest request,
