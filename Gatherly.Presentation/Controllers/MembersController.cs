@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Gatherly.Application.Members.Queries.GetMembers;
 
 namespace Gatherly.Presentation.Controllers;
 
@@ -20,6 +21,16 @@ public sealed class MembersController : ApiController
     public MembersController(ISender sender)
         : base(sender)
     {
+    }
+
+    [HasPermission(Permission.ReadMember)]
+    [HttpGet("members")]
+    public async Task<IActionResult> GetMembers(int page, int pageSize, 
+        CancellationToken cancellationToken)
+    {
+        var query = new GetMembersQuery(page, pageSize);
+        Result<List<MemberResponse>> response = await Sender.Send(query, cancellationToken);
+        return response.IsSuccess ? Ok(response.Value) : NotFound(response.Error);
     }
 
     [HasPermission(Permission.ReadMember)]
