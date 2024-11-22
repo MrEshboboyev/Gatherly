@@ -11,6 +11,7 @@ public class CachingServiceInstaller : IServiceInstaller
         //if you recall CachedMemberRepository is injecting memberRepository inside of its constructor
         services.AddScoped<MemberRepository>();
         services.AddScoped<IMemberRepository, CachedMemberRepository>();
+        // services.AddScoped<MemberSqlRepository>();
         services.AddMemoryCache();
         
         // second aproach

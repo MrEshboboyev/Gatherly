@@ -56,4 +56,30 @@ public sealed class Member : AggregateRoot, IAuditableEntity
         FirstName = firstName;
         LastName = lastName;
     }
+
+    public MemberSnapshot ToSnapshot()
+    {
+        return new MemberSnapshot()
+        {
+            Id = Id,
+            Email = Email.Value,
+            FirstName = FirstName.Value,
+            LastName = LastName.Value,
+            CreatedOnUtc = CreatedOnUtc,
+            ModifiedOnUtc = ModifiedOnUtc
+        };
+    }
+
+    public static Member FromSnapshot(MemberSnapshot memberSnapshot)
+    {
+        return new Member
+        {
+            Id = memberSnapshot.Id,
+            Email = Email.Create(memberSnapshot.Email).Value,
+            FirstName = FirstName.Create(memberSnapshot.FirstName).Value,
+            LastName = LastName.Create(memberSnapshot.LastName).Value,
+            CreatedOnUtc = memberSnapshot.CreatedOnUtc,
+            ModifiedOnUtc = memberSnapshot.ModifiedOnUtc,
+        };
+    }
 }
