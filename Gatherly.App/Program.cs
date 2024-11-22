@@ -1,5 +1,6 @@
 using Gatherly.App.Configurations;
 using Gatherly.App.Middlewares;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,12 @@ builder.Services
     .InstallServices(
         builder.Configuration,
         typeof(IServiceInstaller).Assembly);
+
+builder.Host.UseSerilog((context, configuration) =>
+ configuration
+      //.WriteTo.Console()
+      //.MinimumLevel.Information());
+      .ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 
@@ -17,6 +24,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseSerilogRequestLogging();
 
 app.UseAuthentication();
 app.UseAuthorization();
