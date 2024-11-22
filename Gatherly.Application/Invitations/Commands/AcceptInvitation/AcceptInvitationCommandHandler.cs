@@ -40,11 +40,25 @@ internal class AcceptInvitationCommandHandler
                  DomainErrors.Invitation.AlreadyAccepted(request.GatheringId));
         }
 
-        Result<Attendee> attendeeResult = gathering.AcceptInvitation(invitation);
-        if (attendeeResult.IsSuccess)
+        using var transaction = _unitOfWork.BeginTransaction();
+
+        try
         {
-            _attendeeRepository.Add(attendeeResult.Value);
+            Result<Attendee> attendeeResult = gathering.AcceptInvitation(invitation);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            if (attendeeResult.IsSuccess)
+            {
+                _attendeeRepository.Add(attendeeResult.Value);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
+
+            transaction.Commit();
         }
+        catch (Exception)
+        {
+            transaction.Rollback();
+        }
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         
         return Result.Success();

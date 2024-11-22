@@ -4,6 +4,8 @@ using Gatherly.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Data;
 
 namespace Gatherly.Persistence;
 
@@ -13,6 +15,12 @@ internal sealed class UnitOfWork : IUnitOfWork
     public UnitOfWork(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
+    }
+
+    public IDbTransaction BeginTransaction()
+    {
+        var transaction = _dbContext.Database.BeginTransaction();
+        return transaction.GetDbTransaction();
     }
 
     public Task SaveChangesAsync(CancellationToken cancellationToken = default)
