@@ -31,4 +31,12 @@
 
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\Gatherly.Application\Gatherly.Application.csproj" />
+		<ProjectReference Include="..\Gatherly.Domain\Gatherly.Domain.csproj" />
+		<ProjectReference Include="..\Gatherly.Infrastructure\Gatherly.Infrastructure.csproj" />
+		<ProjectReference Include="..\Gatherly.Persistence\Gatherly.Persistence.csproj" />
+		<ProjectReference Include="..\Gatherly.Presentation\Gatherly.Presentation.csproj" />
+	</ItemGroup>
+
 </Project>

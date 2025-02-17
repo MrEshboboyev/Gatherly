@@ -16,7 +16,7 @@ public class ArchitectureTests
     public void Domain_Should_Not_HaveDependecyOnOtherProjects()
     {
         //Arrange
-        var assembly = Domain.AssemblyReference.Assembly;
+        var assembly = Gatherly.Domain.AssemblyReference.Assembly;
         var otherProjects = new[]
         {
                 AppNamespace,

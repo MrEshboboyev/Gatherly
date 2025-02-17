@@ -18,6 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Gatherly.Application\Gatherly.Application.csproj" />
+    <ProjectReference Include="..\..\src\Gatherly.Domain\Gatherly.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
