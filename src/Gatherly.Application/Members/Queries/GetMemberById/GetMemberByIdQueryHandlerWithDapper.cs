@@ -6,66 +6,66 @@ using Gatherly.Domain.Shared;
 
 namespace Gatherly.Application.Members.Queries.GetMemberById;
 
-internal sealed class GetMemberByIdQueryHandlerWithDapper
-  : IQueryHandler<GetMemberByIdQuery, MemberResponse>
-{
-    private readonly IMemberRepository _memberRepository;
-    private readonly ICacheService _cacheService;
+//internal sealed class GetMemberByIdQueryHandlerWithDapper
+//  : IQueryHandler<GetMemberByIdQuery, MemberResponse>
+//{
+//    private readonly IMemberRepository _memberRepository;
+//    private readonly ICacheService _cacheService;
 
-    public GetMemberByIdQueryHandlerWithDapper(IMemberRepository memberRepository,
-        ICacheService cacheService)
-    {
-        _memberRepository = memberRepository;
-        _cacheService = cacheService;
-    }
+//    public GetMemberByIdQueryHandlerWithDapper(IMemberRepository memberRepository,
+//        ICacheService cacheService)
+//    {
+//        _memberRepository = memberRepository;
+//        _cacheService = cacheService;
+//    }
 
-    public async Task<Result<MemberResponse>> Handle(
-        GetMemberByIdQuery request,
-        CancellationToken cancellationToken)
-    {
-        //normally , we want to cache multiple values, but GetMembers is used with multiple pagination techniques and
-        // we use GetMember only for concept presentation.
+//    public async Task<Result<MemberResponse>> Handle(
+//        GetMemberByIdQuery request,
+//        CancellationToken cancellationToken)
+//    {
+//        //normally , we want to cache multiple values, but GetMembers is used with multiple pagination techniques and
+//        // we use GetMember only for concept presentation.
 
-        //initially, we find member in cache
-        var cachedMember = await _cacheService
-            .GetAsync<MemberResponse>("member", cancellationToken);
+//        //initially, we find member in cache
+//        var cachedMember = await _cacheService
+//            .GetAsync<MemberResponse>("member", cancellationToken);
         
-        if (cachedMember is not null)
-        {
-            return cachedMember;
-        }
+//        if (cachedMember is not null)
+//        {
+//            return cachedMember;
+//        }
 
-        var dbMember = await _memberRepository.GetByIdWithDapperAsync(
-             request.MemberId,
-             cancellationToken);
+//        var dbMember = await _memberRepository.GetByIdWithDapperAsync(
+//             request.MemberId,
+//             cancellationToken);
         
-        if (dbMember is null)
-        {
-            return Result.Failure<MemberResponse>(
-                      DomainErrors.Member.NotFound(request.MemberId));
-        }
+//        if (dbMember is null)
+//        {
+//            return Result.Failure<MemberResponse>(
+//                      DomainErrors.Member.NotFound(request.MemberId));
+//        }
 
-        var response = new MemberResponse(dbMember.Id, dbMember.Email.Value, dbMember.FirstName.Value, 
-            dbMember.LastName.Value);
+//        var response = new MemberResponse(dbMember.Id, dbMember.Email.Value, dbMember.FirstName.Value, 
+//            dbMember.LastName.Value);
 
-        //after we get member in db, we convert it into MemberResponse object and save it in cache.
-        await _cacheService.SetAsync("member", response, cancellationToken);
+//        //after we get member in db, we convert it into MemberResponse object and save it in cache.
+//        await _cacheService.SetAsync("member", response, cancellationToken);
 
-        return response;
+//        return response;
 
-        //or we can use GetAndSetAsync method defined in repo
-        //but for one member we should check null response from db 
-        //if we use the cache for GetMembers we would not encounter this problem.
-        //return await _cacheService.GetAndSetAsync(
-        //    "member",
-        //    async () =>
-        //    {
-        //        var member = await _memberRepository.GetByIdWithDapperAsync(
-        //             request.MemberId,
-        //             cancellationToken);
-        //        var response = new MemberResponse(member.Id, member.Email.Value, member.FirstName.Value, member.LastName.Value);
-        //        return response;
-        //    },
-        //    cancellationToken);
-    }
-}
+//        //or we can use GetAndSetAsync method defined in repo
+//        //but for one member we should check null response from db 
+//        //if we use the cache for GetMembers we would not encounter this problem.
+//        //return await _cacheService.GetAndSetAsync(
+//        //    "member",
+//        //    async () =>
+//        //    {
+//        //        var member = await _memberRepository.GetByIdWithDapperAsync(
+//        //             request.MemberId,
+//        //             cancellationToken);
+//        //        var response = new MemberResponse(member.Id, member.Email.Value, member.FirstName.Value, member.LastName.Value);
+//        //        return response;
+//        //    },
+//        //    cancellationToken);
+//    }
+//}

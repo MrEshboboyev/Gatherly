@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NetArchTest.Rules;
 
-namespace Gatherly.Architecture.UnitTests;
+namespace Gatherly.ArchitectureTests;
 
 public class ArchitectureTests
 {
@@ -41,7 +41,7 @@ public class ArchitectureTests
     public void Application_Should_Not_HaveDependecyOnOtherProjects()
     {
         //Arrange
-        var assembly = Application.AssemblyReference.Assembly;
+        var assembly = Gatherly.Application.AssemblyReference.Assembly;
         var otherProjects = new[]
         {
                 AppNamespace,
@@ -132,7 +132,7 @@ public class ArchitectureTests
     public void Handlers_Should_Have_DependencyOnDomain()
     {
         // Arrange
-        var assembly = Application.AssemblyReference.Assembly;
+        var assembly = Gatherly.Application.AssemblyReference.Assembly;
 
         // Act
         var testResult = Types

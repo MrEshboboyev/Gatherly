@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gatherly.Presentation", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gatherly.Application.UnitTests", "tests\Gatherly.Application.UnitTests\Gatherly.Application.UnitTests.csproj", "{58B87B55-3BB5-0B20-DBE6-E59079B56F05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gatherly.Architecture.UnitTests", "tests\Gatherly.Architecture.UnitTests\Gatherly.Architecture.UnitTests.csproj", "{4D945AA0-99E2-7032-3785-28EF6A654AEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gatherly.ArchitectureTests", "tests\Gatherly.Architecture.UnitTests\Gatherly.ArchitectureTests.csproj", "{4D945AA0-99E2-7032-3785-28EF6A654AEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
