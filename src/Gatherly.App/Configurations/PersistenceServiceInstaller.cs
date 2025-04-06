@@ -23,7 +23,7 @@ public class PersistenceServiceInstaller : IServiceInstaller
             (sp, optionsBuilder) =>
             {
                 //TODO use options pattern
-                optionsBuilder.UseSqlServer(
+                optionsBuilder.UseNpgsql(
                     configuration.GetConnectionString("Database"));
             });
     }

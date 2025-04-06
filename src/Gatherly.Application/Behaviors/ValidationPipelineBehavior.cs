@@ -4,41 +4,33 @@ using MediatR;
 
 namespace Gatherly.Application.Behaviors;
 
-public class ValidationPipelineBehavior<TRequest, TResponse>
+public class ValidationPipelineBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : Result
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
-
-    public ValidationPipelineBehavior(IEnumerable<IValidator<TRequest>> validators)
-    {
-        _validators = validators;
-    }
-
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, 
         CancellationToken cancellationToken)
     {
-        if (!_validators.Any())
+        if (!validators.Any())
         {
-            return await next();
+            return await next(cancellationToken);
         }
 
-        Error[] errors = _validators
+        Error[] errors = [.. validators
             .Select(validator => validator.Validate(request))
             .SelectMany(validationResult => validationResult.Errors)
             .Where(validationFailure => validationFailure is not null)
             .Select(failure => new Error(
                 failure.PropertyName,
                 failure.ErrorMessage))
-            .Distinct()
-            .ToArray();
-        if (errors.Any())
+            .Distinct()];
+        if (errors.Length != 0)
         {
             return CreateValidationResult<TResponse>(errors);
         }
 
-        return await next();
+        return await next(cancellationToken);
     }
 
     private static TResult CreateValidationResult<TResult>(Error[] errors)
@@ -53,7 +45,7 @@ public class ValidationPipelineBehavior<TRequest, TResponse>
              .GetGenericTypeDefinition()
              .MakeGenericType(typeof(Result).GenericTypeArguments[0])
              .GetMethod(nameof(ValidationResult.WithErrors))!
-             .Invoke(null, new object?[] { errors })!;
+             .Invoke(null, [errors])!;
 
         return (TResult)validationResult;
     }
