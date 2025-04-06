@@ -1,22 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MediatR" Version="11.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
-    <PackageReference Include="Polly" Version="8.5.0" />
-    <PackageReference Include="Quartz" Version="3.13.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Gatherly.Application\Gatherly.Application.csproj" />
-    <ProjectReference Include="..\Gatherly.Domain\Gatherly.Domain.csproj" />
-    <ProjectReference Include="..\Gatherly.Persistence\Gatherly.Persistence.csproj" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+		<PackageReference Include="Polly" />
+		<PackageReference Include="Quartz" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Gatherly.Application\Gatherly.Application.csproj" />
+		<ProjectReference Include="..\Gatherly.Persistence\Gatherly.Persistence.csproj" />
+	</ItemGroup>
 </Project>
