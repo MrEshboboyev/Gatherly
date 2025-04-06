@@ -2,30 +2,26 @@
 using Gatherly.Application.Members.Commands.Login;
 using Gatherly.Application.Members.Commands.UpdateMember;
 using Gatherly.Application.Members.Queries.GetMemberById;
-using Gatherly.Domain.Shared;
+using Gatherly.Application.Members.Queries.GetMembers;
 using Gatherly.Domain.Enums;
+using Gatherly.Domain.Shared;
 using Gatherly.Infrastructure.Authentication;
 using Gatherly.Presentation.Abstractions;
+using Gatherly.Presentation.Authentication;
 using Gatherly.Presentation.Contracts.Members;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Gatherly.Application.Members.Queries.GetMembers;
-using Gatherly.Presentation.Authentication;
 
 namespace Gatherly.Presentation.Controllers;
 
 [ApiKey]
 [Route("api/members")]
-public sealed class MembersController : ApiController
+public sealed class MembersController(ISender sender) : ApiController(sender)
 {
-    public MembersController(ISender sender)
-        : base(sender)
-    {
-    }
-
     [HasPermission(Permission.ReadMember)]
-    [HttpGet("members")]
-    public async Task<IActionResult> GetMembers(int page, int pageSize, 
+    public async Task<IActionResult> GetMembers(
+        int page, 
+        int pageSize, 
         CancellationToken cancellationToken)
     {
         var query = new GetMembersQuery(page, pageSize);
@@ -35,7 +31,9 @@ public sealed class MembersController : ApiController
 
     [HasPermission(Permission.ReadMember)]
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetMemberById(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMemberById(
+        Guid id, 
+        CancellationToken cancellationToken)
     {
         var query = new GetMemberByIdQuery(id);
         Result<MemberResponse> response = await Sender.Send(query, cancellationToken);

@@ -6,6 +6,7 @@ namespace Gatherly.Domain.Repositories;
 public interface IMemberRepository
 {
     Task<Member> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Member> GetByIdWithRolesAsync(Guid id, CancellationToken cancellationToken = default);
     Task<Member> GetByIdWithDapperAsync(Guid id, CancellationToken cancellationToken = default);
     Task<Member> GetByEmailAsync(Email email, CancellationToken cancellationToken = default);
     Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default);

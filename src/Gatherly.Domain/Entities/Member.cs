@@ -6,6 +6,8 @@ namespace Gatherly.Domain.Entities;
 
 public sealed class Member : AggregateRoot, IAuditableEntity
 {
+    #region Constructors
+
     private Member(Guid id, Email email, FirstName firstName, LastName lastName)
      : base(id)
     {
@@ -13,37 +15,48 @@ public sealed class Member : AggregateRoot, IAuditableEntity
         FirstName = firstName;
         LastName = lastName;
     }
+
     private Member()
     {
     }
+
+    #endregion
+
+    #region Properties
+
     public FirstName FirstName { get; set; }
     public LastName LastName { get; set; }
     public Email Email { get; set; }
     public DateTime CreatedOnUtc { get; set; }
     public DateTime? ModifiedOnUtc { get; set; }
-    public ICollection<Role> Roles { get; set; }
+    public ICollection<Role> Roles { get; set; } = [];
+
+    #endregion
+
+    #region Factory Methods
 
     public static Member Create(
         Guid id,
         Email email,
         FirstName firstName,
-        LastName lastName
-        /*bool isEmailUnique*/)
+        LastName lastName)
     {
-        //if (!isEmailUnique)
-        //{
-        //    return null;
-        //}
         var member = new Member(
             id,
             email,
             firstName,
             lastName);
+
         member.RaiseDomainEvent(new MemberRegisteredDomainEvent(
             Guid.NewGuid(),
             member.Id));
+        
         return member;
     }
+
+    #endregion
+
+    #region Own methods
 
     public void ChangeName(FirstName firstName, LastName lastName)
     {
@@ -56,6 +69,8 @@ public sealed class Member : AggregateRoot, IAuditableEntity
         FirstName = firstName;
         LastName = lastName;
     }
+
+    #region Snapshot related
 
     public MemberSnapshot ToSnapshot()
     {
@@ -82,4 +97,22 @@ public sealed class Member : AggregateRoot, IAuditableEntity
             ModifiedOnUtc = memberSnapshot.ModifiedOnUtc,
         };
     }
+
+    #endregion
+
+    #endregion
+
+    #region Role related
+
+    public void AssignRole(Role role)
+    {
+        if (Roles.Contains(role))
+        {
+            return;
+        }
+
+        Roles.Add(role);
+    }
+
+    #endregion
 }

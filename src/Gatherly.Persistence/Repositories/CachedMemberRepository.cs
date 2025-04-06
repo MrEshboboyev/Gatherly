@@ -32,6 +32,19 @@ public class CachedMemberRepository : IMemberRepository
             });
     }
 
+    public Task<Member> GetByIdWithRolesAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        string cache_key = $"member-{id}";
+
+        return _memoryCache.GetOrCreateAsync(
+            cache_key,
+            entry =>
+            {
+                entry.SetAbsoluteExpiration(TimeSpan.FromMinutes(2));// expire in 2 minutes
+                return _decorated.GetByIdAsync(id, cancellationToken);
+            });
+    }
+
     public Task<Member> GetByIdWithDapperAsync(Guid id, CancellationToken cancellationToken = default)
     {
         string cache_key = $"member-{id}";

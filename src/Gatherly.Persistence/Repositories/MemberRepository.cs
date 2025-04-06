@@ -28,6 +28,12 @@ public sealed class MemberRepository : IMemberRepository
             .Set<Member>()
             .FirstOrDefaultAsync(member => member.Id == id, cancellationToken);
 
+    public async Task<Member> GetByIdWithRolesAsync(Guid id, CancellationToken cancellationToken = default) =>
+        await _dbContext
+            .Set<Member>()
+            .Include(member => member.Roles)
+            .FirstOrDefaultAsync(member => member.Id == id, cancellationToken);
+
     public async Task<Member> GetByIdWithDapperAsync(Guid id, CancellationToken cancellationToken = default)
     {
         await using SqlConnection sqlConnection = _connectionFactory.CreateConnection();
